@@ -13,9 +13,9 @@ const camera = new THREE.PerspectiveCamera(
 
 camera.position.z = 6;
 
-const light = new THREE.DirectionalLight("white", 2);
-light.position.set(2,2,2);
-scene.add(light);
+// const light = new THREE.DirectionalLight("white", 2);
+// light.position.set(2,2,2);
+// scene.add(light);
 // const material = new THREE.MeshStandardMaterial();
 // const material = new THREE.MeshPhysicalMaterial({color:"white"});
 // material.metalness =0.5;
@@ -23,10 +23,10 @@ scene.add(light);
 // material.clearcoat = 1;
 
 
-const geometry = new THREE.SphereGeometry(2,20,20);
-const material = new THREE.MeshPhysicalMaterial({color:"white"});
+const geometry = new THREE.BoxGeometry(2,2,3);
+const material = new THREE.MeshBasicMaterial({color:"white" ,wireframe:true });
 const mesh = new THREE.Mesh(geometry,material);
-
+// mesh.lookAt(-1,1, 0);
 scene.add(mesh);
 
 const canvas = document.querySelector("canvas");
@@ -37,12 +37,21 @@ renderer.render (scene , camera);
 
 const controls = new OrbitControls( camera, renderer.domElement );
 
+const mouse = {
+	x:0,
+	y:0,
+}
+
+window.addEventListener("mousemove",function(e){
+	mouse.x=e.clientX/window.innerWidth;
+	mouse.y=e.clientY/window.innerHeight;
+})
 // let clock = new THREE.Clock();
 
 function animate(){
 	window.requestAnimationFrame(animate);
 	controls.update();
-    
+    mesh.lookAt(new THREE.Vector3(mouse.x -0.5 , -mouse.y+0.5 , 1))
 	// mesh.rotation.y = clock.getElapsedTime()*5;
     renderer.render(scene,camera);
 }
